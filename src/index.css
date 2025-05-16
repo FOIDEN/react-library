@@ -1,0 +1,66 @@
+/**
+ * Основные стили приложения
+ * Использует Tailwind CSS для утилитарных классов
+ */
+
+/* Импорт базовых стилей Tailwind */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Определение глобальных CSS-переменных */
+:root {
+  /* Основной цвет и его темный вариант */
+  --primary: #2563eb;
+  --primary-dark: #1d4ed8;
+}
+
+/* Пользовательские утилиты Tailwind */
+@layer utilities {
+  /* Стандартная анимация перехода */
+  .duration-high {
+    @apply transition-all duration-300 ease-in-out;
+  }
+}
+
+/* Анимация вращения для элементов */
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Класс для применения анимации вращения */
+.spin {
+  animation: spin 40s linear infinite;
+}
+
+/* Плавная прокрутка для всей страницы */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Стиль выделения текста */
+::selection {
+  @apply bg-primary text-white;
+}
+
+/* Утилиты для работы с основным цветом */
+.bg-primary {
+  background-color: var(--primary);
+}
+
+.hover\:bg-primary-dark:hover {
+  background-color: var(--primary-dark);
+}
+
+.text-primary {
+  color: var(--primary);
+}
+
+.hover\:text-primary-dark:hover {
+  color: var(--primary-dark);
+}
