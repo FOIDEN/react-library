@@ -4,6 +4,7 @@
  */
 
 import { createContext, useContext, useState, ReactNode } from 'react';
+import { storageService } from '../services/storageService';
 
 /**
  * Интерфейс пользователя
@@ -22,11 +23,13 @@ interface User {
  * @property {User | null} user - Текущий пользователь или null если не авторизован
  * @property {function} login - Функция для входа пользователя
  * @property {function} logout - Функция для выхода пользователя
+ * @property {function} updateEmail - Функция для обновления email пользователя
  */
 interface AuthContextType {
   user: User | null;
   login: (user: User) => void;
   logout: () => void;
+  updateEmail: (newEmail: string) => void;
 }
 
 // Создание контекста с начальным значением undefined
@@ -62,8 +65,23 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     localStorage.removeItem('currentUser');
   };
 
+  /**
+   * Функция обновления email пользователя
+   * Обновляет email в состоянии и localStorage
+   * @param {string} newEmail - Новый email пользователя
+   */
+  const updateEmail = (newEmail: string) => {
+    if (user) {
+      const updatedUser = { ...user, email: newEmail };
+      setUser(updatedUser);
+      localStorage.setItem('currentUser', JSON.stringify(updatedUser));
+      // Обновляем данные в storage
+      storageService.saveUser(updatedUser);
+    }
+  };
+
   return (
-    <AuthContext.Provider value={{ user, login, logout }}>
+    <AuthContext.Provider value={{ user, login, logout, updateEmail }}>
       {children}
     </AuthContext.Provider>
   );
